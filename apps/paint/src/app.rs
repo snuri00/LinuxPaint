@@ -147,6 +147,7 @@ pub struct PaintApp {
     pub last_saved_size: Option<u64>,
     pub size_from_env: bool,
     pub look: crate::system::SystemLook,
+    pub clip: Option<Image>,
 }
 
 impl PaintApp {
@@ -239,6 +240,7 @@ impl PaintApp {
             last_saved_size: None,
             size_from_env: std::env::var("PAINT_SCREEN").is_ok(),
             look,
+            clip: None,
         };
         if let Some(p) = path {
             app.open_path(p);
@@ -550,16 +552,17 @@ impl PaintApp {
         });
     }
 
-    pub fn copy(&mut self, cut: bool) {
+    pub fn copy(&mut self, ctx: &egui::Context, cut: bool) {
         let Some(img) = self.selection_image() else { return };
-        crate::clipboard::set_image(&img);
+        ctx.copy_image(to_color_image(&img, img.bounds()));
+        self.clip = Some(img);
         if cut {
             self.delete_selection();
         }
     }
 
     pub fn paste(&mut self, img: Option<Image>) {
-        let Some(img) = img.or_else(crate::clipboard::get_image) else { return };
+        let Some(img) = img.or_else(crate::clipboard::get_image).or_else(|| self.clip.clone()) else { return };
         self.commit_all();
         if img.w > self.doc.w || img.h > self.doc.h {
             let before = self.snapshot();

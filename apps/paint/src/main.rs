@@ -184,14 +184,18 @@ fn shortcuts(app: &mut PaintApp, ctx: &egui::Context) {
     if sc(cmd, Key::A) {
         app.select_all();
     }
-    if sc(cmd, Key::C) {
-        app.copy(false);
-    }
-    if sc(cmd, Key::X) {
-        app.copy(true);
-    }
-    if sc(cmd, Key::V) {
-        app.paste(None);
+    let events = ctx.input(|i| i.events.clone());
+    for e in events {
+        match e {
+            egui::Event::Copy => app.copy(ctx, false),
+            egui::Event::Cut => app.copy(ctx, true),
+            egui::Event::PasteImage(img) => {
+                let px = img.pixels.iter().map(|c| c.to_array()).collect();
+                app.paste(Some(paint_core::Image { w: img.size[0] as u32, h: img.size[1] as u32, px }));
+            }
+            egui::Event::Paste(_) => app.paste(None),
+            _ => {}
+        }
     }
     if sc(cmd, Key::W) {
         app.dialogs.resize = Some(dialogs::ResizeState::default());

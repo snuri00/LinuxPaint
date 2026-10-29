@@ -61,3 +61,18 @@ fn project_roundtrip() {
     assert!(!back.layers[0].visible);
     assert_eq!(back.layers[1].image.get(2, 2), doc.layers[1].image.get(2, 2));
 }
+
+#[test]
+fn pencil_one_pixel_line_has_one_pixel_per_column() {
+    let params = StrokeParams { kind: BrushKind::Pencil, size: 1.0, color: Color::BLACK, opacity: 1.0, recolor: None };
+    let mut s = Stroke::new(params, 64, 64, 1);
+    s.add_point(Point::new(2.3, 5.7), 1.0);
+    let r = s.add_point(Point::new(60.8, 31.2), 1.0);
+    let base = Image::filled(64, 64, Color::WHITE);
+    let mut out = base.clone();
+    s.composite(&base, &mut out, r);
+    for x in 2..=60 {
+        let n = (0..64).filter(|&y| Color::from_premul(out.get(x, y)) == Color::BLACK).count();
+        assert_eq!(n, 1, "column {x}");
+    }
+}

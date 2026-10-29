@@ -1,13 +1,4 @@
-use std::borrow::Cow;
-
 use paint_core::Image;
-
-pub fn set_image(img: &Image) {
-    if let Ok(mut cb) = arboard::Clipboard::new() {
-        let data = arboard::ImageData { width: img.w as usize, height: img.h as usize, bytes: Cow::Owned(img.to_rgba8()) };
-        let _ = cb.set_image(data);
-    }
-}
 
 pub fn get_image() -> Option<Image> {
     let mut cb = arboard::Clipboard::new().ok()?;

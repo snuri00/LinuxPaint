@@ -109,6 +109,7 @@ impl Stroke {
             BrushKind::Calligraphy45 => self.nib(a, p, Point::new(-1.0, 1.0)),
             BrushKind::Calligraphy135 => self.nib(a, p, Point::new(1.0, 1.0)),
             BrushKind::EraserSquare => self.square(a, p),
+            BrushKind::Pencil if self.params.size <= 3.0 => self.pixel_line(a, p),
             k => {
                 let rad = self.params.size * 0.5;
                 let ra = rad * pressure_curve(pa);
@@ -130,6 +131,38 @@ impl Stroke {
             }
             _ => Rect::EMPTY,
         }
+    }
+
+    fn pixel_line(&mut self, a: Point, b: Point) -> Rect {
+        let n = self.params.size.round().max(1.0) as i32;
+        let off = (n - 1) / 2;
+        let (mut x0, mut y0) = (a.x.floor() as i32, a.y.floor() as i32);
+        let (x1, y1) = (b.x.floor() as i32, b.y.floor() as i32);
+        let dx = (x1 - x0).abs();
+        let dy = -(y1 - y0).abs();
+        let sx = if x0 < x1 { 1 } else { -1 };
+        let sy = if y0 < y1 { 1 } else { -1 };
+        let mut err = dx + dy;
+        loop {
+            for yy in 0..n {
+                for xx in 0..n {
+                    self.mask.set(x0 - off + xx, y0 - off + yy, 1.0);
+                }
+            }
+            if x0 == x1 && y0 == y1 {
+                break;
+            }
+            let e2 = 2 * err;
+            if e2 >= dy {
+                err += dy;
+                x0 += sx;
+            }
+            if e2 <= dx {
+                err += dx;
+                y0 += sy;
+            }
+        }
+        Rect::from_points(a, b).inflate(n + 1).intersect(&self.mask.bounds())
     }
 
     fn spray(&mut self, c: Point) -> Rect {
