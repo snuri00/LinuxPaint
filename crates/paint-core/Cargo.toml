@@ -1,0 +1,10 @@
+[package]
+name = "paint-core"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+image.workspace = true
+ab_glyph.workspace = true
+tiff = "0.11"

@@ -1,0 +1,25 @@
+[workspace]
+resolver = "2"
+members = ["crates/paint-core", "apps/paint"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+license = "MIT"
+
+[workspace.dependencies]
+paint-core = { path = "crates/paint-core" }
+eframe = { version = "0.37", default-features = false, features = ["wgpu", "default_fonts", "wayland", "x11"] }
+image = { version = "0.25", default-features = false, features = ["png", "jpeg", "bmp", "gif", "tiff", "webp", "ico"] }
+rfd = "0.17"
+ab_glyph = "0.2"
+fontdb = "0.23"
+
+[profile.dev]
+opt-level = 1
+
+[profile.dev.package."*"]
+opt-level = 3
+
+[profile.dev.package.paint-core]
+opt-level = 3
