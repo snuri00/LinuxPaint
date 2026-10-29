@@ -1,0 +1,34 @@
+id: io.github.snuri00.LinuxPaint
+runtime: org.freedesktop.Platform
+runtime-version: '26.08'
+sdk: org.freedesktop.Sdk
+sdk-extensions:
+  - org.freedesktop.Sdk.Extension.rust-stable
+command: linuxpaint
+finish-args:
+  - --share=ipc
+  - --socket=wayland
+  - --socket=fallback-x11
+  - --device=dri
+modules:
+  - name: linuxpaint
+    buildsystem: simple
+    build-options:
+      append-path: /usr/lib/sdk/rust-stable/bin
+      env:
+        CARGO_HOME: /run/build/linuxpaint/cargo
+        CARGO_NET_OFFLINE: 'true'
+    build-commands:
+      - cargo --offline build --release --locked -p paint
+      - install -Dm755 target/release/paint /app/bin/linuxpaint
+      - install -Dm644 packaging/io.github.snuri00.LinuxPaint.desktop /app/share/applications/io.github.snuri00.LinuxPaint.desktop
+      - install -Dm644 packaging/io.github.snuri00.LinuxPaint.metainfo.xml /app/share/metainfo/io.github.snuri00.LinuxPaint.metainfo.xml
+      - install -Dm644 packaging/io.github.snuri00.LinuxPaint.svg /app/share/icons/hicolor/scalable/apps/io.github.snuri00.LinuxPaint.svg
+    sources:
+      - type: dir
+        path: ..
+        skip:
+          - target
+          - .flatpak-builder
+          - build-dir
+      - cargo-sources.json

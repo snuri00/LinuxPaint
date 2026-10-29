@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.github.snuri00.LinuxPaint</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>MIT</project_license>
+  <name>LinuxPaint</name>
+  <summary>Draw, paint and edit pictures</summary>
+  <developer id="io.github.snuri00">
+    <name>snuri00</name>
+  </developer>
+  <description>
+    <p>LinuxPaint is a simple and fast painting program for drawing, sketching and editing pictures, with a familiar ribbon toolbar and a native GNOME look.</p>
+    <ul>
+      <li>Pencil, brush, calligraphy, airbrush, oil, crayon, marker, natural pencil and watercolor brushes</li>
+      <li>23 editable shapes with outline and fill styles</li>
+      <li>Selections, crop, resize and skew, rotate and flip</li>
+      <li>Layers with project files</li>
+      <li>Text, fill, color picker and eyedropper</li>
+    </ul>
+  </description>
+  <launchable type="desktop-id">io.github.snuri00.LinuxPaint.desktop</launchable>
+  <url type="homepage">https://github.com/snuri00/LinuxPaint</url>
+  <url type="bugtracker">https://github.com/snuri00/LinuxPaint/issues</url>
+  <screenshots>
+    <screenshot type="default">
+      <caption>Painting with different brushes and the layers panel</caption>
+      <image>https://raw.githubusercontent.com/snuri00/LinuxPaint/v0.1.0/packaging/screenshots/main.png</image>
+    </screenshot>
+  </screenshots>
+  <content_rating type="oars-1.1"/>
+  <supports>
+    <control>pointing</control>
+    <control>keyboard</control>
+  </supports>
+  <requires>
+    <display_length compare="ge">520</display_length>
+  </requires>
+  <branding>
+    <color type="primary" scheme_preference="light">#99c1f1</color>
+    <color type="primary" scheme_preference="dark">#1a5fb4</color>
+  </branding>
+  <releases>
+    <release version="0.1.0" date="2026-10-29"/>
+  </releases>
+</component>

@@ -683,7 +683,7 @@ impl PaintApp {
                 self.last_saved_size = std::fs::metadata(&p).ok().map(|m| m.len());
                 self.mark_all();
             }
-            Err(e) => self.dialogs.message = Some(format!("Paint cannot read this file.\n{e}")),
+            Err(e) => self.dialogs.message = Some(format!("LinuxPaint cannot read this file.\n{e}")),
         }
     }
 
@@ -744,7 +744,7 @@ impl PaintApp {
                 true
             }
             Err(e) => {
-                self.dialogs.message = Some(format!("Paint cannot save this file.\n{e}"));
+                self.dialogs.message = Some(format!("LinuxPaint cannot save this file.\n{e}"));
                 false
             }
         }
@@ -757,7 +757,7 @@ impl PaintApp {
             .and_then(|p| p.file_name())
             .map(|s| s.to_string_lossy().into_owned())
             .unwrap_or_else(|| "Untitled".into());
-        format!("{}{name} - Paint", if self.dirty { "*" } else { "" })
+        format!("{}{name} - LinuxPaint", if self.dirty { "*" } else { "" })
     }
 
     pub fn set_theme(&mut self, ctx: &egui::Context, choice: ThemeChoice) {

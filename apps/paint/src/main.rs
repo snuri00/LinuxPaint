@@ -262,13 +262,13 @@ fn main() -> eframe::Result {
     let path = std::env::args().nth(1).map(std::path::PathBuf::from);
     let options = eframe::NativeOptions {
         viewport: egui::ViewportBuilder::default()
-            .with_title("Paint")
-            .with_app_id("paint")
+            .with_title("LinuxPaint")
+            .with_app_id("io.github.snuri00.LinuxPaint")
             .with_inner_size([1280.0, 860.0])
             .with_min_inner_size([520.0, 420.0])
             .with_decorations(false),
         renderer: eframe::Renderer::Wgpu,
         ..Default::default()
     };
-    eframe::run_native("Paint", options, Box::new(move |cc| Ok(Box::new(PaintApp::new(cc, path)))))
+    eframe::run_native("LinuxPaint", options, Box::new(move |cc| Ok(Box::new(PaintApp::new(cc, path)))))
 }

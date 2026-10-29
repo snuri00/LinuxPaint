@@ -394,9 +394,9 @@ pub fn show(app: &mut PaintApp, ctx: &egui::Context) {
     }
 
     if let Some(action) = app.dialogs.about_unsaved {
-        let name = app.title().trim_start_matches('*').trim_end_matches(" - Paint").to_string();
+        let name = app.title().trim_start_matches('*').trim_end_matches(" - LinuxPaint").to_string();
         let mut choice = None;
-        modal(ctx, "Paint", |ui| {
+        modal(ctx, "LinuxPaint", |ui| {
             ui.label(format!("Do you want to save changes to {name}?"));
             ui.add_space(16.0);
             ui.horizontal(|ui| {
@@ -431,7 +431,7 @@ pub fn show(app: &mut PaintApp, ctx: &egui::Context) {
     }
 
     if let Some(msg) = app.dialogs.message.clone() {
-        if modal(ctx, "Paint", |ui| {
+        if modal(ctx, "LinuxPaint", |ui| {
             ui.label(msg);
             ui.add_space(12.0);
             adw_button(ui, "OK", true, ui.available_width()).then_some(true)

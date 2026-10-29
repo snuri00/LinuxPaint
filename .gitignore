@@ -1,3 +1,5 @@
 target/
 .claude/
-spec/
+.flatpak-builder/
+build-dir/
+.flatpak-build.log

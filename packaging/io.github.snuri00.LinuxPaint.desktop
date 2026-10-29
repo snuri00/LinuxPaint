@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Application
+Name=LinuxPaint
+GenericName=Image Editor
+Comment=Draw, paint and edit pictures
+Exec=linuxpaint %f
+Icon=io.github.snuri00.LinuxPaint
+Terminal=false
+Categories=Graphics;2DGraphics;RasterGraphics;
+Keywords=paint;draw;image;picture;brush;
+MimeType=image/png;image/jpeg;image/bmp;image/gif;image/tiff;image/webp;
+StartupNotify=true
+StartupWMClass=io.github.snuri00.LinuxPaint

@@ -13,6 +13,9 @@ impl FontCache {
     pub fn new() -> Self {
         let mut db = Database::new();
         db.load_system_fonts();
+        for dir in ["/run/host/fonts", "/run/host/user-fonts", "/run/host/local-fonts"] {
+            db.load_fonts_dir(dir);
+        }
         let mut families: Vec<String> = db
             .faces()
             .filter_map(|f| f.families.first().map(|(n, _)| n.clone()))

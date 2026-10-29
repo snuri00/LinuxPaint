@@ -258,9 +258,6 @@ pub fn title_bar(app: &mut PaintApp, ui: &mut Ui) {
             window_buttons(app, ui, &left);
             ui.add_space(8.0);
         }
-        let (r, _) = ui.allocate_exact_size(vec2(22.0, 22.0), Sense::hover());
-        icons::draw(ui.painter(), Icon::AppLogo, r, pal.icon);
-        ui.add_space(4.0);
         for (id, label) in [("file", "File"), ("edit", "Edit"), ("view", "View")] {
             let r = text_button(ui, &pal, label, app.open_menu == Some(id));
             if r.clicked() {
@@ -287,7 +284,7 @@ pub fn title_bar(app: &mut PaintApp, ui: &mut Ui) {
                 ui.add_space(4.0);
             }
             let open = app.open_menu == Some("settings");
-            let resp = icon_button(ui, &pal, Icon::Settings, vec2(34.0, 34.0), open, true).on_hover_text("Settings");
+            let resp = icon_button(ui, &pal, Icon::Settings, vec2(34.0, 34.0), open, true).on_hover_text("Main Menu");
             if resp.clicked() {
                 app.open_menu = if open { None } else { Some("settings") };
             }
