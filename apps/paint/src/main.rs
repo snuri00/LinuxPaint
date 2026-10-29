@@ -107,7 +107,44 @@ fn resize_edges(ctx: &egui::Context) {
     }
 }
 
+fn clipboard_keys(app: &mut PaintApp, ctx: &egui::Context) {
+    let cmd = Modifiers::COMMAND;
+    let (c, x, v) = ctx.input_mut(|i| {
+        (
+            i.consume_shortcut(&KeyboardShortcut::new(cmd, Key::C)) || i.consume_key(Modifiers::NONE, Key::Copy),
+            i.consume_shortcut(&KeyboardShortcut::new(cmd, Key::X)) || i.consume_key(Modifiers::NONE, Key::Cut),
+            i.consume_shortcut(&KeyboardShortcut::new(cmd, Key::V)) || i.consume_key(Modifiers::NONE, Key::Paste),
+        )
+    });
+    if ctx.egui_wants_keyboard_input() {
+        ctx.input_mut(|i| {
+            if c {
+                i.events.push(egui::Event::Copy);
+            }
+            if x {
+                i.events.push(egui::Event::Cut);
+            }
+            if v {
+                if let Some(t) = clipboard::get_text() {
+                    i.events.push(egui::Event::Paste(t));
+                }
+            }
+        });
+        return;
+    }
+    if c {
+        app.copy(false);
+    }
+    if x {
+        app.copy(true);
+    }
+    if v {
+        app.paste(None);
+    }
+}
+
 fn shortcuts(app: &mut PaintApp, ctx: &egui::Context) {
+    clipboard_keys(app, ctx);
     if ctx.egui_wants_keyboard_input() {
         if app.text.is_some() {
             let toggles = ctx.input_mut(|i| {
@@ -184,19 +221,6 @@ fn shortcuts(app: &mut PaintApp, ctx: &egui::Context) {
     if sc(cmd, Key::A) {
         app.select_all();
     }
-    let events = ctx.input(|i| i.events.clone());
-    for e in events {
-        match e {
-            egui::Event::Copy => app.copy(ctx, false),
-            egui::Event::Cut => app.copy(ctx, true),
-            egui::Event::PasteImage(img) => {
-                let px = img.pixels.iter().map(|c| c.to_array()).collect();
-                app.paste(Some(paint_core::Image { w: img.size[0] as u32, h: img.size[1] as u32, px }));
-            }
-            egui::Event::Paste(_) => app.paste(None),
-            _ => {}
-        }
-    }
     if sc(cmd, Key::W) {
         app.dialogs.resize = Some(dialogs::ResizeState::default());
     }
@@ -272,6 +296,7 @@ fn main() -> eframe::Result {
             .with_min_inner_size([520.0, 420.0])
             .with_decorations(false),
         renderer: eframe::Renderer::Wgpu,
+        clipboard_shortcuts: false,
         ..Default::default()
     };
     eframe::run_native("LinuxPaint", options, Box::new(move |cc| Ok(Box::new(PaintApp::new(cc, path)))))

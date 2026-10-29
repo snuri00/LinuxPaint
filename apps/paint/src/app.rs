@@ -552,9 +552,9 @@ impl PaintApp {
         });
     }
 
-    pub fn copy(&mut self, ctx: &egui::Context, cut: bool) {
+    pub fn copy(&mut self, cut: bool) {
         let Some(img) = self.selection_image() else { return };
-        ctx.copy_image(to_color_image(&img, img.bounds()));
+        crate::clipboard::set_image(&img);
         self.clip = Some(img);
         if cut {
             self.delete_selection();

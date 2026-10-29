@@ -374,11 +374,11 @@ fn menus(app: &mut PaintApp, ui: &Ui, id: &'static str, anchor: Rect) {
             menu_sep(ui, &pal);
             let has_sel = app.selection.is_some();
             if menu_item(ui, &pal, None, "Cut", "Ctrl+X", has_sel) {
-                app.copy(ui.ctx(), true);
+                app.copy(true);
                 close = true;
             }
             if menu_item(ui, &pal, None, "Copy", "Ctrl+C", has_sel) {
-                app.copy(ui.ctx(), false);
+                app.copy(false);
                 close = true;
             }
             if menu_item(ui, &pal, None, "Paste", "Ctrl+V", true) {
