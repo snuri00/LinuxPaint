@@ -1,1 +1,1 @@
-# 3DPaint for Linux
+# Paint for Linux
